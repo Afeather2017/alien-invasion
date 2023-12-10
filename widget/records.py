@@ -33,7 +33,7 @@ class Records:
         """传入任意多的分数与其等级，即可记录"""
         for arg in args:
             ctime = time.strftime('%Y%m%d-%H:%M:%S')
-            logging.info('Recorded new score:', (ctime, ) + arg)
+            print('Recorded new score:', (ctime, ) + arg)
             self.connection.execute(
                 '''insert into scores values (?, ?, ?)''',
                 (ctime, ) + arg)

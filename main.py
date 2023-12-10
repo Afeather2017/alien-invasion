@@ -24,10 +24,10 @@ from widget.label      import Label
 from widget.background import Background
 from widget.records    import Records
 
-from entities.ship      import Ship
-from entities.bullet    import BulletGroup
-from entities.laser     import LaserGroup
-from entities.alien     import AlienGroup
+from entities.ship   import Ship
+from entities.bullet import BulletGroup
+from entities.laser  import LaserGroup
+from entities.alien  import AlienGroup
 
 class ShipStat(Enum):
     """船的状态"""
@@ -158,6 +158,7 @@ class AlienInvasion:
     def _new_record(self):
         records = Records()
         records.record_new_entries((self.stats.level, self.stats.score))
+        del records
 
     def _level_up(self):
         """下一个等级"""
@@ -281,13 +282,15 @@ class AlienInvasion:
 
     def _ship_hit_action(self):
         """Respond to the ship being hit by an alien."""
-        self._new_record()
         if self.stats.ships_left > 0:
             # Decrement ships_left, and update scoreboard.
             self.stats.ships_left -= 1
             self._game_reset()
         else:
+            self._new_record()
             self.stats.game_active = False
+            self._game_reset()
+            self.stats.reset_stats()
             # pygame.mouse.set_visible(True)
 
     def kill_game(self):
