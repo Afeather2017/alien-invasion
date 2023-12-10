@@ -4,8 +4,8 @@ import logging
 import os
 
 class Records:
+    """持久化游戏分数"""
     def __init__(self):
-        """持久化游戏分数"""
         # 打开数据库
         if os.path.exists('score_record.sqlite3'):
             uri = 'file:score_record.sqlite3?mode=rw'

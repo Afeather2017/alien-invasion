@@ -73,12 +73,6 @@ class LaserGroup:
         """获得Group对象"""
         return self.lasers
 
-
-    def collision_action(self, another, kill_self=False, kill_another=False):
-        """和another发生碰撞后，是否删除laser和another，返回碰撞的对象列表"""
-        return pygame.sprite.groupcollide(
-                self.lasers, another, kill_self, kill_another)
-
     def is_collided_with(self, *args):
         """检测当前对象是否和任意对象有碰撞"""
         return pygame.sprite.spritecollideany(self.group(), *args)
@@ -86,3 +80,7 @@ class LaserGroup:
     def empty(self):
         """清空所有激光"""
         return self.lasers.empty()
+
+    def __len__(self):
+        """获得激光数量"""
+        return len(self.lasers)

@@ -31,3 +31,7 @@ class Button:
         # Draw blank button and then draw message.
         self.screen.fill(self.button_color, self.rect)
         self.screen.blit(self.msg_image, self.msg_image_rect)
+
+    def is_clicked(self, mouse_pos):
+        """Start a new game when the player clicks Play."""
+        return self.rect.collidepoint(mouse_pos)

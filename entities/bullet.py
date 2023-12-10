@@ -45,6 +45,9 @@ class BulletGroup:
             new_bullet = Bullet(self.screen, self.settings, position)
             self.bullets.add(new_bullet)
 
+    def __len__(self):
+        return len(self.bullets)
+
     def update(self):
         """Update position of bullets and get rid of old bullets."""
         # Update bullet positions.

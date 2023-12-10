@@ -22,6 +22,7 @@ from widget.scoreboard import Scoreboard
 from widget.button     import Button
 from widget.label      import Label
 from widget.background import Background
+from widget.records    import Records
 
 from entities.ship      import Ship
 from entities.bullet    import BulletGroup
@@ -56,17 +57,21 @@ class AlienInvasion:
         # Create an instance to store game statistics,
         #   and create a scoreboard.
         self.stats = GameStats(self)
+        self.stats.high_score = Records().highest_score()
+        print('highest score:', self.stats.high_score)
         self.sb    = Scoreboard(self)
 
         self.ship    = Ship       (self.screen, self.settings)
         self.bullets = BulletGroup(self.screen, self.settings)
         self.lasers  = LaserGroup (self.screen, self.settings)
-        self.aliens  = AlienGroup (self.screen, self.settings, self.ship.height)
+        self.aliens  = AlienGroup (self.screen, self.settings, self.ship.height())
 
         self.background = Background(self.screen, self.settings)
 
         self.stat_time = float('inf')
         self.ship_stat = ShipStat.NORMAL
+
+        self.in_control = True
 
         # Make the Play button.
         self.play_button = Button(self, "Play")
@@ -79,7 +84,7 @@ class AlienInvasion:
 
     def run_game(self):
         """Start the main loop for the game."""
-        while True:
+        while self.in_control:
             if   time.time_ns() - self.stat_time >= 1500000000:
                 self.ship_stat = ShipStat.NORMAL
                 self.stat_time = float('inf')
@@ -149,6 +154,10 @@ class AlienInvasion:
 
         self.sb.prep_score()
         self.sb.check_high_score()
+
+    def _new_record(self):
+        records = Records()
+        records.record_new_entries((self.stats.level, self.stats.score))
 
     def _level_up(self):
         """下一个等级"""
@@ -272,6 +281,7 @@ class AlienInvasion:
 
     def _ship_hit_action(self):
         """Respond to the ship being hit by an alien."""
+        self._new_record()
         if self.stats.ships_left > 0:
             # Decrement ships_left, and update scoreboard.
             self.stats.ships_left -= 1
@@ -279,6 +289,9 @@ class AlienInvasion:
         else:
             self.stats.game_active = False
             # pygame.mouse.set_visible(True)
+
+    def kill_game(self):
+        self.in_control = False
 
 if __name__ == '__main__':
     # Make a game instance, and run the game.

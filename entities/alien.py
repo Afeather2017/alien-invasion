@@ -66,9 +66,8 @@ class AlienGroup:
         number_aliens_x = available_space_x // (2 * alien_width)
 
         # Determine the number of rows of aliens that fit on the screen.
-        ship_height = self.ship_height()
-        available_space_y = (self.settings.screen_height -
-                                (3 * alien_height) - ship_height)
+        ship_height = self.ship_height
+        available_space_y = (self.settings.screen_height - (3 * alien_height) - ship_height)
         number_rows = available_space_y // (2 * alien_height)
 
         # Create the full fleet of aliens.
@@ -131,3 +130,7 @@ class AlienGroup:
         if hasattr(obj, 'sprite'):
             return bool(pygame.sprite.spritecollideany(obj.sprite(), self.aliens))
         raise RuntimeError(f'{type(obj)} not supported')
+
+    def __len__(self):
+        """获得数量"""
+        return len(self.aliens)

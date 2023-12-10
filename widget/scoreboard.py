@@ -1,7 +1,7 @@
 import pygame.font
 from pygame.sprite import Group
  
-from entities.ship import Ship
+from entities.ship import BottomShip
 
 class Scoreboard:
     """A class to report scoring information."""
@@ -63,7 +63,7 @@ class Scoreboard:
         """Show how many ships are left."""
         self.ships = Group()
         for ship_number in range(self.stats.ships_left):
-            ship = Ship(self.ai_game)
+            ship = BottomShip(self.ai_game.screen, self.ai_game.settings)
             ship.rect.x = 10 + ship_number * ship.rect.width
             ship.rect.y = 10
             self.ships.add(ship)
